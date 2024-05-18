@@ -1,9 +1,12 @@
 name: Push Checks
 
 on:
-  push: {}
+  push:
+    branches:
+      - deployment
   pull_request_target:
      types: labeled
+
 jobs:
   check-test-trigger:
     runs-on: ubuntu-latest
@@ -13,12 +16,10 @@ jobs:
         if: contains(github.event.pull_request.labels.*.name, 'ci:run')
         with:
           labels: ci:run
-  builds:
-    name: Builds
+  build:
+    name: Build
     uses: ./.github/workflows/build.yml
     needs: check-test-trigger
     with:
       ref: ${{ github.event.pull_request.head.sha }}
-    secrets:
-      unityLicense: ${{ secrets.UNITY_LICENSE }}
-      githubToken: ${{ secrets.GITHUB_TOKEN }}
+    secrets: inherit

@@ -1,4 +1,4 @@
-name: Build VRigUnity
+name: Manually Build VRigUnity
 
 on:
   workflow_dispatch:
@@ -7,12 +7,10 @@ on:
         type: string
         default: v0.10.1-macos11
 jobs:
-  builds:
-    name: Builds
+  build:
+    name: Build
     uses: ./.github/workflows/build.yml
     with:
       tag: ${{ inputs.tag }}
       ref: ${{ github.event.ref }}
-    secrets:
-      unityLicense: ${{ secrets.UNITY_LICENSE }}
-      githubToken: ${{ secrets.GITHUB_TOKEN }}
+    secrets: inherit
